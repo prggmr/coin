@@ -115,7 +115,3 @@ class Coin
 		return false;
 	}
 }
-
-$coin = new Coin();
-$token = $coin->generate('26545', 'safi374(&*G(PG&UT)&(UDB#(Hpoiugcb897ub-7fg)');
-$coin->validate($token, 'safi374(&*G(PG&UT)&(UDB#(Hpoiugcb897ub-7fg)');
