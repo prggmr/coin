@@ -26,14 +26,14 @@
  * itself.
  *
  * A coin is generated using the SHA-1 hashing algorithm and a simple algorithm
- * that randomly inserts the data within the hash for extraction when needed providing.
+ * that randomly inserts the data within the hash for extraction when needed.
  *
  * Usage
  * $coin = new Coin();
- * echo $coin->generate('26545', 'safi374(&*G(PG&UT)&(UDB#(Hpoiugcb897ub-7fg)')."\n";
+ * $token = $coin->generate('26545', 'safi374(&*G(PG&UT)&(UDB#(Hpoiugcb897ub-7fg)')."\n";
  *
  * Result
- * 046a1-24-5-7fd294808e412962eb826545369499af191694b5
+ * $token = 046a1-24-5-7fd294808e412962eb826545369499af191694b5
  */
 class Coin
 {
