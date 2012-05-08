@@ -77,9 +77,11 @@ class Coin
 	 */
 	public function validate($data, $key = null, $boolean = false)
 	{
-        if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $coin) === false) {
-            return false;
-        }
+		
+		// This doesnt seem to match the data passed in:
+        	if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $data) === false) {
+            	return false;
+        	}
 
 		$explode = explode('-', $data);
 		if (null == $explode[0]) {
