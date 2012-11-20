@@ -38,82 +38,82 @@
 class Coin
 {
 
-	/**
-	 * Generates a coin.
-	 *
-	 * @param  string  $data  String data to encode within the coin.
-	 * @param  string  $key  Private key.
-	 * @param  boolean  $compare  Returns the full generated coin prior to encoding.
-	 *
-	 * @return  string  Encoded coin string.
-	 */
-	public function generate($data, $key = null, $compare = false)
-	{
-		$token = substr(sha1($data.$key), 0, 20).substr(sha1($key.$data), 0, 20);
-		if ($compare) return $token;
-		$rand = rand(15, 39);
-		$array = array();
-		for ($i=0;$i!=strlen($token);$i++) {
-			$array[] = $token[$i];
-		}
-		$append = $array[$rand];
-		$array[$rand] = $data;
-		for ($i=0;$i!=strlen($token);$i++) {
-			if (is_numeric($token[$i]) && strlen($token[$i]) == 1) {
-				$loc = $token[$i];
-				break;
-			}
-		}
-		$prepend = $array[$loc];
-		$array[$loc] = '-'.$rand.'-'.strlen($data).'-';
-		$token = $prepend.implode('', $array).$append;
-		return $token;
-	}
+    /**
+     * Generates a coin.
+     *
+     * @param  string  $data  String data to encode within the coin.
+     * @param  string  $key  Private key.
+     * @param  boolean  $compare  Returns the full generated coin prior to encoding.
+     *
+     * @return  string  Encoded coin string.
+     */
+    public static function generate($data, $key = null, $compare = false)
+    {
+        $token = substr(sha1($data.$key), 0, 20).substr(sha1($key.$data), 0, 20);
+        if ($compare) return $token;
+        $rand = rand(15, 39);
+        $array = array();
+        for ($i=0; $i != strlen($token); $i++) {
+            $array[] = $token[$i];
+        }
+        $append = $array[$rand];
+        $array[$rand] = $data;
+        for ($i = 0; $i != strlen($token); $i++) {
+            if (is_numeric($token[$i]) && strlen($token[$i]) == 1) {
+                $loc = $token[$i];
+                break;
+            }
+        }
+        $prepend = $array[$loc];
+        $array[$loc] = '-'.$rand.'-'.strlen($data).'-';
+        $token = $prepend.implode('', $array).$append;
+        return $token;
+    }
 
-	/**
-	 * Validates a coin.
-	 *
-	 * @param
-	 */
-	public function validate($data, $key = null, $boolean = false)
-	{
-		
-		// This doesnt seem to match the data passed in:
-        	if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $data) === false) {
-            	return false;
-        	}
+    /**
+     * Validates a coin.
+     *
+     * @param
+     */
+    public static function validate($data, $key = null, $boolean = false)
+    {
+        
+        // This doesnt seem to match the data passed in:
+        if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $data) === false) {
+            return false;
+        }
 
-		$explode = explode('-', $data);
-		if (null == $explode[0]) {
-			$place  = $explode[1];
-			$length = $explode[2];
-			$string = $explode[3];
-		} else {
-			$place  = $explode[1];
-			$length = $explode[2];
-			$append = substr($explode[0], 0, 1);
-			$string = substr($explode[0], 1, strlen($explode[0]) - 1).$append.$explode[3];
-		}
+        $explode = explode('-', $data);
+        if (null == $explode[0]) {
+            $place  = $explode[1];
+            $length = $explode[2];
+            $string = $explode[3];
+        } else {
+            $place  = $explode[1];
+            $length = $explode[2];
+            $append = substr($explode[0], 0, 1);
+            $string = substr($explode[0], 1, strlen($explode[0]) - 1).$append.$explode[3];
+        }
 
-		if ($place <= 14) {
-			return false;
-		}
+        if ($place <= 14) {
+            return false;
+        }
 
-		$last = substr($string, -1, 1);
-		$string = substr($string, 0, strlen($string) - 1);
-		$return = substr($string, $place, $length);
-		$string = substr_replace($string, $last, $place, $length);
+        $last = substr($string, -1, 1);
+        $string = substr($string, 0, strlen($string) - 1);
+        $return = substr($string, $place, $length);
+        $string = substr_replace($string, $last, $place, $length);
 
-		$matches = ($this->generate($return, $key, true) === $string);
+        $matches = ($this->generate($return, $key, true) === $string);
 
-		if ($matches) {
-			if ($boolean) {
-				return true;
-			} else {
-				return $return;
-			}
-		}
+        if ($matches) {
+            if ($boolean) {
+                return true;
+            } else {
+                return $return;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
