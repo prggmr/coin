@@ -33,8 +33,8 @@ function coin($data, $key = COIN_SECRET, $compare = false) {
 /**
  * @docblock  method  Coin::validate
  */
-function coin_validate($data, $key = null, $boolean = false) {
-    return (new Coin())->generate($data, $key, $compare);
+function coin_validate($data, $key = COIN_SECRET, $boolean = false) {
+    return (new Coin())->validate($data, $key, $compare);
 }
 
 /**
@@ -78,7 +78,7 @@ class Coin
      *    // Create a coin
      *    coin('helloworld')
      */
-    public static function generate($data, $key = null, $compare = false)
+    public static function generate($data, $key = COIN_SECRET, $compare = false)
     {
         $token = substr(sha1($data.$key), 0, 20).substr(sha1($key.$data), 0, 20);
         if ($compare) return $token;
@@ -106,7 +106,7 @@ class Coin
      *
      * @param
      */
-    public static function validate($data, $key = null, $boolean = false)
+    public static function validate($data, $key = COIN_SECRET, $boolean = false)
     {
         
         if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $data) === false) {
