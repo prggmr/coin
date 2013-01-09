@@ -1,6 +1,6 @@
 # coin
 
-string token generation and validation in php
+Token system for PHP.
 
 ## Introduction
 

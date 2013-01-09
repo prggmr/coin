@@ -15,25 +15,44 @@
  *  limitations under the License.
  *
  *
- * @author  Nickolas Whiting  <me@nwhiting.com>
- * @package  Coin
+ * @author  Nickolas Whiting  <prggmr@gmail.com>
  * @copyright  Copyright (c), 2010 Nickolas Whiting
  */
 
+if (!defined('COIN_SECRET')) {
+    define('COIN_SECRET', null);
+}
+
 /**
- * Coin is a simple means of generating tokens that are flexible, secure and
- * can contain an inifite amount of arbitrary data that is stored within the token
- * itself.
+ * @docblock  method  Coin::generate
+ */
+function coin($data, $key = COIN_SECRET, $compare = false) {
+    return (new Coin())->generate($data, $key, $compare);
+}
+
+/**
+ * @docblock  method  Coin::validate
+ */
+function coin_validate($data, $key = null, $boolean = false) {
+    return (new Coin())->generate($data, $key, $compare);
+}
+
+/**
+ * Coin stores strings using the SHA-1 hashing algorithm and a trick.
  *
- * A coin is generated using the SHA-1 hashing algorithm and a simple algorithm
- * that randomly inserts the data within the hash for extraction when needed.
+ * It also extracts and validates it.
  *
- * Usage
- * $coin = new Coin();
- * $token = $coin->generate('26545', 'safi374(&*G(PG&UT)&(UDB#(Hpoiugcb897ub-7fg)')."\n";
+ * @example
+ * 
+ * .. code-block:: php
  *
- * Result
- * $token = 046a1-24-5-7fd294808e412962eb826545369499af191694b5
+ *    <?php
+ *    
+ *    // Generate a coin
+ *    $coin = coin('helloworld');
+ *  
+ *    // Your shiny new coin!
+ *    // 046a1-24-5-7fd294808e412962eb826545369499af191694b5
  */
 class Coin
 {
@@ -41,11 +60,23 @@ class Coin
     /**
      * Generates a coin.
      *
-     * @param  string  $data  String data to encode within the coin.
-     * @param  string  $key  Private key.
-     * @param  boolean  $compare  Returns the full generated coin prior to encoding.
+     * @param  string  $data  String to coin.
+     * 
+     * @optional
+     * @param  string  $key  The Secret key.
      *
-     * @return  string  Encoded coin string.
+     * @optional
+     * @param  boolean  $compare  Compare coins.
+     *
+     * @return  string  A shiny new coin.
+     *
+     * @example
+     *
+     * .. code-block:: php
+     *
+     *    <?php
+     *    // Create a coin
+     *    coin('helloworld')
      */
     public static function generate($data, $key = null, $compare = false)
     {
@@ -78,7 +109,6 @@ class Coin
     public static function validate($data, $key = null, $boolean = false)
     {
         
-        // This doesnt seem to match the data passed in:
         if (preg_match('^([\w\d]+)-([\d]+)-([\d]+)-([\w\d]+)^', $data) === false) {
             return false;
         }
