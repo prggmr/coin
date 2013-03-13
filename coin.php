@@ -125,7 +125,7 @@ class Coin
             $string = substr($explode[0], 1, strlen($explode[0]) - 1).$append.$explode[3];
         }
 
-        if ($place <= 14) {
+        if ($place <= 14 && $place >= 40) {
             return false;
         }
 
