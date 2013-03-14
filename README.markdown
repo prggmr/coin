@@ -16,29 +16,48 @@ and this is not a method of encrypting or hashing!
 
 Now that I've covered those basics here are some examples.
 
-## Generating a coin
+## Requirements
+
+* PHP >= 5.4
+
+## Generating and validating coin using the API
+
+    $token = coin('mycoin', 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087');
+
+## Generating a coin using the Coin Class
 
     $coin = new Coin();
     $token = $coin->generate('mycoin', 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087');
 
-### Generates a coin of
+### Both generate a coin of
 
 bd-36-6-d131b7277331bc917ab780e47cd2a56d3cmycoin6dbf
 
 Take note if you use this example your results will vary as each coin is randomly generated.
 
-## Validating a coin
+## Validating a coin using the API
 
-    $coin = new Coin();
-    $validated = $coin->validate($token, 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087')
-
-    if (!$validated) {
-        echo "Invalid coin";
+    $token = coin('mycoin', 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087');
+    $coin = validate_coin($token, 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087');
+    
+    if (!$coin) {
+        echo "Invalid Coin";
     } else {
-        echo $validated;
+        // If valid the value of the coin is returned from coin_validate
+        echo 'Value contained in the coin : ' . $coin;
     }
 
-    // Once validated the coin's value is returned
+## Validating a coin using the Coin Class
+
+    $coin = new Coin();
+    $valid_coin = $coin->validate($token, 'kB&(T#)G#&(t79 bvrc g0b72uxb479g&T087')
+
+    if (!$valid_coin) {
+        echo "Invalid coin";
+    } else {
+        // If valid the value of the coin is returned from validate
+        echo 'Value contained in the coin : ' .  $valid_coin;
+    }
 
 ## About the Author
 
