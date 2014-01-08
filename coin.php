@@ -20,27 +20,39 @@
  */
 
 if (!defined('COIN_SECRET')) {
-    define('COIN_SECRET', null);
+    /**
+     * Default secret for your coins.
+     *
+     * Modifying the secret with change invalidate all current coins.
+     */
+    define('COIN_SECRET', 'theworldisfullyofshinyshinycoins');
+}
+
+if (!defined('COIN_HASH')) {
+    /**
+     * Default hash algorithm for your coins.
+     *
+     * Modifying the hash algorithm with change invalidate all current coins.
+     */
+    define('COIN_HASH', 'sha1');
 }
 
 /**
  * @docblock  method  Coin::generate
  */
 function coin($data, $key = COIN_SECRET, $compare = false) {
-    return (new Coin())->generate($data, $key, $compare);
+    return Coin::generate($data, $key, $compare);
 }
 
 /**
  * @docblock  method  Coin::validate
  */
-function coin_validate($data, $key = COIN_SECRET, $boolean = false) {
-    return (new Coin())->validate($data, $key, $compare);
+function coin_validate($data, $key = COIN_SECRET, $compare = false) {
+    return Coin::validate($data, $key, $compare);
 }
 
 /**
- * Coin stores strings using the SHA-1 hashing algorithm and a trick.
- *
- * It also extracts and validates it.
+ * Coin stores strings within strings for later use.
  *
  * @example
  * 
@@ -52,7 +64,7 @@ function coin_validate($data, $key = COIN_SECRET, $boolean = false) {
  *    $coin = coin('helloworld');
  *  
  *    // Your shiny new coin!
- *    // 046a1-24-5-7fd294808e412962eb826545369499af191694b5
+ *    // ac36-31-11-c15054536e408cdcc50c0b6abc6helloworld126cd17fe
  */
 class Coin
 {
@@ -80,7 +92,7 @@ class Coin
      */
     public static function generate($data, $key = COIN_SECRET, $compare = false)
     {
-        $token = substr(sha1($data.$key), 0, 20).substr(sha1($key.$data), 0, 20);
+        $token = substr(hash('sha1', $data.$key), 0, 20).substr(hash('sha1', $key.$data), 0, 20);
         if ($compare) return $token;
         $rand = rand(15, 39);
         $array = array();
@@ -134,7 +146,7 @@ class Coin
         $return = substr($string, $place, $length);
         $string = substr_replace($string, $last, $place, $length);
 
-        $matches = ($this->generate($return, $key, true) === $string);
+        $matches = (self::generate($return, $key, true) === $string);
 
         if ($matches) {
             if ($boolean) {

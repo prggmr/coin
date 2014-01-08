@@ -18,7 +18,7 @@ Now that I've covered those basics here are some examples.
 
 ## Requirements
 
-* PHP >= 5.4
+* PHP >= 5.3
 
 ## Generating and validating coin using the API
 
